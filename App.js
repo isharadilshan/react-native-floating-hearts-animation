@@ -12,22 +12,36 @@ const App = () => {
   const [hearts, setHearts] = useState([]);
 
   const addHeart = () => {
+    heartCount++;
     setHearts([
       ...hearts,
       {
         id: heartCount,
-        right: getRandomNumber(30, 60),
+        right: getRandomNumber(30, 150),
       },
     ]);
-    heartCount++;
   };
+
+  const removeHeart = (id) => {
+    setHearts(
+      hearts.filter((heart) => {
+        return heart.id !== id;
+      }),
+    );
+  };
+  // console.log('HEART COUNT _______----------<>>>>>>>>', heartCount);
 
   return (
     <View style={styles.parentContainer}>
       <View style={styles.parentContainer}>
         {hearts.map((heart) => {
+          console.log('HEART ________------_____----->>>>>>>>>>', heart);
           return (
-            <HeartContainer key={heart.id} customStyle={{right: heart.right}} />
+            <HeartContainer
+              key={heart.id}
+              customStyle={{right: heart.right}}
+              onComplete={() => removeHeart(heart.id)}
+            />
           );
         })}
       </View>
