@@ -1,16 +1,37 @@
-import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import FloatinActionButton from './src/components/FloatingActionButton';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import FloatinActionButton from './src/components/button/FloatingActionButton';
+import HeartContainer from './src/components/heart/HeartContainer';
+
+let heartCount = 0;
+const getRandomNumber = (min, max) => {
+  return Math.random() * (max - min) + min;
+};
 
 const App = () => {
+  const [hearts, setHearts] = useState([]);
+
+  const addHeart = () => {
+    setHearts([
+      ...hearts,
+      {
+        id: heartCount,
+        right: getRandomNumber(30, 60),
+      },
+    ]);
+    heartCount++;
+  };
+
   return (
     <View style={styles.parentContainer}>
-      <Text>Home page</Text>
-      <FloatinActionButton
-        onPress={() => {
-          console.log('cabvkjdavwdbv');
-        }}
-      />
+      <View style={styles.parentContainer}>
+        {hearts.map((heart) => {
+          return (
+            <HeartContainer key={heart.id} customStyle={{right: heart.right}} />
+          );
+        })}
+      </View>
+      <FloatinActionButton onPress={addHeart} />
     </View>
   );
 };
