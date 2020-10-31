@@ -1,10 +1,16 @@
-import React, {useEffect, useRef} from 'react';
-import {StyleSheet, Animated, Easing} from 'react-native';
+import React, {useEffect, useState, useRef} from 'react';
+import {StyleSheet, Animated, Easing, View, Text} from 'react-native';
 import Heart from './Heart';
+import FloatingActionButton from '../button/FloatingActionButton';
 
 const height = 800;
-const animationEndY = Math.ceil(height * 0.8);
+const animationEndY = Math.ceil(height * 0.5);
 const negativeEndY = animationEndY * -1;
+let heartCount = 0;
+
+const getRandomNumber = (min, max) => {
+  return Math.random() * (max - min) + min;
+};
 
 const HeartContainer = (props) => {
   const {customStyle, onComplete} = props;
@@ -49,8 +55,8 @@ const HeartContainer = (props) => {
       toValue: negativeEndY,
       easing: Easing.ease,
       useNativeDriver: true,
-    }).start(onComplete);
-  });
+    }).start(() => {});
+  },[]);
 
   const getHeartStyle = () => {
     return {
@@ -65,19 +71,67 @@ const HeartContainer = (props) => {
   };
 
   return (
-    <Animated.View
-      style={[styles.heartContainer, getHeartStyle(), customStyle]}>
-      <Heart />
+    <Animated.View style={[styles.heartContainer, getHeartStyle(), customStyle]}>
+      <Heart/>
     </Animated.View>
   );
 };
 
+const AnimatedScreen = () => {
+  const [hearts, setHearts] = useState([]);
+
+  const addHeart = () => {
+    heartCount++;
+    setHearts([
+      ...hearts,
+      {
+        id: heartCount,
+        right: getRandomNumber(30, 150),
+      },
+    ]);
+  };
+
+  const removeHeart = (id) => {
+    setHearts(
+      hearts.filter((heart) => {
+        return heart.id !== id;
+      }),
+    );
+  };
+
+  return (
+    <View style={styles.animatedScreenWrapper}>
+      {
+        hearts.map((heart, index) => {
+          return (
+            <HeartContainer
+              key={index}
+              customStyle={{right: heart.right}}
+              onComplete={() => removeHeart(heart.id)}
+            />
+          );
+        })
+      }
+      <FloatingActionButton onPress={addHeart}/>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
+  parentContainer: {
+    flex: 1,
+    backgroundColor: 'rgb(245,249,255)',
+  },
   heartContainer: {
     position: 'absolute',
     bottom: 30,
     backgroundColor: 'transparent',
   },
+  animatedScreenWrapper: {
+    height: 250,
+    width: 300,
+    backgroundColor: 'pink',
+  },
 });
 
-export default HeartContainer;
+export default AnimatedScreen;
