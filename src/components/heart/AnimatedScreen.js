@@ -98,9 +98,7 @@ const AnimatedScreen = () => {
       }),
     );
   };
-
-  console.log('HEART COUNT -----------------------',heartCount);
-
+  
   return (
     <View style={styles.animatedScreenWrapper}>
       {
