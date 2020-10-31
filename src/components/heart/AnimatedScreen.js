@@ -55,7 +55,7 @@ const HeartContainer = (props) => {
       toValue: negativeEndY,
       easing: Easing.ease,
       useNativeDriver: true,
-    }).start(() => {});
+    }).start();
   },[]);
 
   const getHeartStyle = () => {
@@ -98,6 +98,8 @@ const AnimatedScreen = () => {
       }),
     );
   };
+
+  console.log('HEART COUNT -----------------------',heartCount);
 
   return (
     <View style={styles.animatedScreenWrapper}>
