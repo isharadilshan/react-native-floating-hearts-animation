@@ -1,12 +1,12 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import AnimatedScreen from './src/components/heart/AnimatedScreen';
+import JournalCard from './src/components/card/JournalCard';
 
 const App = () => {
 
   return (
     <View style={styles.parentContainer}>
-      <AnimatedScreen/>
+      <JournalCard/>
     </View>
   );
 };
